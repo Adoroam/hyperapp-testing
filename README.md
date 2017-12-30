@@ -1,5 +1,7 @@
 ### Hyperapp Boilerplate/Testing ###
-- npm i
+
+##### installation #####
+- install modules `npm i`
 - run rollup
   - to watch `npm run dev`
   - to build `npm run build`
