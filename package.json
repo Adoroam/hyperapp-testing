@@ -1,0 +1,20 @@
+{
+  "name": "ha-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
+  },
+  "author": "ado",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "hyperapp": "^1.0.0"
+  },
+  "devDependencies": {
+    "rollup-plugin-buble": "^0.18.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  }
+}
