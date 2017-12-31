@@ -1,17 +1,23 @@
 import { h, app } from 'hyperapp'
-
 const state = {
-  item: 1
+  item: 1,
+  mockData: ''
 }
 
 const actions = {
-  inc: () => state => ({item: state.item + 1})
+  inc: () => s => ({item: s.item + 1}),
+  test: pl => (s, a) => {
+    console.log('payload', pl)
+  }
 }
 
-const view = (state, actions) => (
+const view = (s, a) => (
   <div>
-    <h1>{state.item}</h1>
-    <button onclick={actions.inc}>go up</button>
+    <h1>Hyperapp Testing</h1>
+    <p>{s.item}</p>
+    <p>{s.mockData}</p>
+    <button onclick={a.inc}>inc</button>
+    <button onclick={(e) => a.test(s.item)}>test</button>
   </div>
 )
 app(state, actions, view, document.body)
