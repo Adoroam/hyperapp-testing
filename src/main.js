@@ -14,11 +14,8 @@ const state = {
   barChart: false,
   pieChart: false,
   touchey: {
-    plate: false,
     sx: false,
-    sy: false,
-    ex: false,
-    ey: false
+    ex: false
   }
 }
 const actions = {
@@ -81,13 +78,9 @@ const actions = {
       s.pieChart.update()
     }
   },
-  tStart: eObj => s => {
-    s.touchey.sx = eObj.e.touches[0].screenX
-    s.touchey.sy = eObj.e.touches[0].screenY
-  },
+  tStart: eObj => s => { s.touchey.sx = eObj.e.touches[0].screenX },
   tEnd: eObj => (s, a) => {
     s.touchey.ex = eObj.e.changedTouches[0].screenX
-    s.touchey.ey = eObj.e.changedTouches[0].screenY
     let t = s.touchey
     if ((t.ex > t.sx) && (t.ex - t.sx > 10)) a.incUpdate(eObj.plate) // right
     if ((t.ex < t.sx) && (t.sx - t.ex > 10)) a.decUpdate(eObj.plate) // left
