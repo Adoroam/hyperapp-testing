@@ -88,8 +88,8 @@ const actions = {
     s.touchey.ex = eObj.e.changedTouches[0].screenX
     s.touchey.ey = eObj.e.changedTouches[0].screenY
     let t = s.touchey
-    if ((t.ex > t.sx) && (t.ex - t.sx > 175)) a.incUpdate(eObj.plate)
-    if ((t.ex < t.sx) && (t.sx - t.ex > 175)) a.decUpdate(eObj.plate) // left
+    if ((t.ex > t.sx) && (t.ex - t.sx > 10)) a.incUpdate(eObj.plate) // right
+    if ((t.ex < t.sx) && (t.sx - t.ex > 10)) a.decUpdate(eObj.plate) // left
   }
 }
 // PLATE
@@ -107,6 +107,14 @@ const Plate = ({name, price, qty, hexCode, inc, dec, ts, te}) => (
       <div class='media-body media-middle'>
         <h3 class='pmd-card-title-text'>${(price * qty).toFixed(2)}</h3>
         <span class='pmd-card-subtitle-text'>${price}</span>
+      </div>
+      <div class='media-right'>
+        <button
+          class='btn btn-sm pmd-btn-fab pmd-ripple-effect btn-default inc-button'
+          type='button'
+          onclick={inc}>
+          <i class='material-icons pmd-sm'>add</i>
+        </button>
       </div>
     </div>
   </div>
@@ -144,13 +152,4 @@ const view = (s, a) => (
   </div>
 )
 // onclick={() => a.reset()}
-/* <tr>
-  <td colspan='4'>
-    <div class='row'>
-      <div class="lead pull-left" style={{backgroundColor: plate.hexCode, margin: '3px', padding: '3px', width: '100%'}}>
-        {plate.name}<span style={{fontSize: '0.6em', color: '#e2e2e2'}} class='pull-right'> ${plate.price}</span>
-      </div>
-    </div>
-  </td>
-</tr> */
 app(state, actions, view, document.body)
