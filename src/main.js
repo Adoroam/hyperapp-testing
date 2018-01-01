@@ -93,7 +93,7 @@ const actions = {
   }
 }
 // PLATE
-const Plate = ({name, price, qty, hexCode, inc, dec, ts, te}) => (
+const MobilePlate = ({name, price, qty, hexCode, inc, ts, te}) => (
   <div
     class='pmd-card pmd-card-default pmd-z-depth'
     style={{backgroundColor: hexCode}}
@@ -120,34 +120,48 @@ const Plate = ({name, price, qty, hexCode, inc, dec, ts, te}) => (
   </div>
 )
 const view = (s, a) => (
-  <div class='visible-xs'>
-    <div class='pmd-card pmd-card-default pmd-z-depth'>
-      <div class='pmd-card-title'>
-        <h2 class='pmd-card-title-text'>sushiChooChoo.js</h2>
-        <span class='pmd-card-subtitle-text'>total</span> <span class='lead'>${s.plateTotal.toFixed(2)}</span>
+  <div class='the-parent'>
+    {/* MOBILE */}
+    <div class='visible-xs'>
+      <div class='pmd-card pmd-card-default pmd-z-depth'>
+        <div class='pmd-card-title'>
+          <h2 class='pmd-card-title-text'>sushiChooChoo.js</h2>
+          <span class='pmd-card-subtitle-text'>total</span> <span class='lead'>${s.plateTotal.toFixed(2)}</span>
+        </div>
+      </div>
+      {s.plates.map(plate => (
+        <MobilePlate
+          name={plate.name}
+          price={plate.price}
+          qty={plate.qty}
+          hexCode={plate.hexCode}
+          inc={() => a.incUpdate(plate)}
+          ts={(e) => a.tStart({e, plate})}
+          te={(e) => a.tEnd({e, plate})}
+        />
+      ))}
+      <div class='pmd-card pmd-card-default pmd-z-depth'>
+        <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
+          <canvas id='barchart' />
+        </div>
+      </div>
+      <div class='pmd-card pmd-card-default pmd-z-depth'>
+        <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
+          <canvas id='piechart' />
+        </div>
       </div>
     </div>
-    {s.plates.map(plate => (
-      <Plate
-        name={plate.name}
-        price={plate.price}
-        qty={plate.qty}
-        hexCode={plate.hexCode}
-        inc={() => a.incUpdate(plate)}
-        dec={() => a.decUpdate(plate)}
-        ts={(e) => a.tStart({e, plate})}
-        te={(e) => a.tEnd({e, plate})}
-      />
-    ))}
-    <div class='pmd-card pmd-card-default pmd-z-depth'>
-      <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
-        <canvas id='barchart' />
-      </div>
+    {/* TABLET */}
+    <div class='container visible-sm'>
+      <p>tablet</p>
     </div>
-    <div class='pmd-card pmd-card-default pmd-z-depth'>
-      <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
-        <canvas id='piechart' />
-      </div>
+    {/* LAPTOP */}
+    <div class='container visible-md'>
+      <p>laptop</p>
+    </div>
+    {/* DESKTOP */}
+    <div class='container visible-lg'>
+      <p>desktop</p>
     </div>
   </div>
 )
