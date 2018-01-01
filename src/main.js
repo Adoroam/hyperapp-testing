@@ -1,15 +1,14 @@
 import { h, app } from 'hyperapp'
 
-const plateChart = [
-  { name: 'Orange', price: 4.25, qty: 0, hexCode: '#FF6F00' },
-  { name: 'Purple', price: 3.75, qty: 0, hexCode: '#9F09FF' },
-  { name: 'Pink', price: 3.25, qty: 0, hexCode: '#E883B4' },
-  { name: 'Green', price: 2.75, qty: 0, hexCode: '#89BB3E' },
-  { name: 'Blue', price: 2.25, qty: 0, hexCode: '#3765DA' },
-  { name: 'Yellow', price: 1.75, qty: 0, hexCode: '#FFD72F' }
-]
 const state = {
-  plates: plateChart,
+  plates: [
+    { name: 'Orange', price: 4.25, qty: 0, hexCode: '#FF6F00' },
+    { name: 'Purple', price: 3.75, qty: 0, hexCode: '#9F09FF' },
+    { name: 'Pink', price: 3.25, qty: 0, hexCode: '#E883B4' },
+    { name: 'Green', price: 2.75, qty: 0, hexCode: '#89BB3E' },
+    { name: 'Blue', price: 2.25, qty: 0, hexCode: '#3765DA' },
+    { name: 'Yellow', price: 1.75, qty: 0, hexCode: '#FFD72F' }
+  ],
   plateTotal: 0,
   barChart: false,
   pieChart: false
@@ -94,7 +93,7 @@ const Plate = ({name, price, qty, hexCode, inc, dec}) => (
         </li>
       </ul>
     </td>
-    <td class='lead'>{qty}</td>
+    <td>{qty}</td>
     <td>
       <a href='javascript:void(0);' onclick={inc}>
         <i class='material-icons md-dark pmd-sm' style={plateStyle(hexCode)}>add_circle_outline</i>
