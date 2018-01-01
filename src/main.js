@@ -26,6 +26,7 @@ const actions = {
   decUpdate: plate => (s, a) => {
     a.dec(plate)
     a.setTotal()
+    a.updateCharts()
   },
   reducer: () => s => {
     return s.plates.reduce((acc, curr) => {
@@ -37,6 +38,7 @@ const actions = {
   reset: () => (s, a) => {
     s.plates.forEach(item => { item.qty = 0 })
     a.setTotal()
+    a.updateCharts()
   },
   createCharts: () => s => {
     let barEle = document.getElementById('barchart')
@@ -117,7 +119,7 @@ const view = (s, a) => (
         </button>
       </div>
     </div>
-    <div class='pmd-table-card pmd-card pmd-z-depth col-sm-4'>
+    <div class='pmd-table-card pmd-card pmd-z-depth col-lg-4'>
       <table class='table pmd-table'>
         <thead>
           <tr>
@@ -134,7 +136,7 @@ const view = (s, a) => (
         </tbody>
       </table>
     </div>
-    <div class='pmd-card pmd-z-depth col-sm-6 col-sm-offset-2'>
+    <div class='pmd-card pmd-z-depth col-lg-6 col-lg-offset-2'>
       <div class='pmd-card-title'>
         <h2 class='pmd-card-title-text'>${s.plateTotal.toFixed(2)}</h2>
         <span class='pmd-card-subtitle-text'>Total</span>
