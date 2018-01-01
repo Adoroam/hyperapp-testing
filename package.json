@@ -10,11 +10,19 @@
   "author": "ado",
   "license": "ISC",
   "dependencies": {
+    "chart.js": "^2.7.1",
+    "chartjs": "^0.3.24",
     "express": "^4.16.2",
-    "hyperapp": "^1.0.0"
+    "hyperapp": "^1.0.0",
+    "propellerkit": "^1.1.0"
   },
   "devDependencies": {
     "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "standard": {
+    "globals": [
+      "Chart"
+    ]
   }
 }
