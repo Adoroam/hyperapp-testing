@@ -11,7 +11,14 @@ const state = {
   ],
   plateTotal: 0,
   barChart: false,
-  pieChart: false
+  pieChart: false,
+  touchey: {
+    plate: false,
+    sx: false,
+    sy: false,
+    ex: false,
+    ey: false
+  }
 }
 const actions = {
   inc: plate => s => { plate.qty++ },
@@ -72,79 +79,78 @@ const actions = {
       }
       s.pieChart.update()
     }
+  },
+  tStart: eObj => s => {
+    s.touchey.sx = eObj.e.touches[0].screenX
+    s.touchey.sy = eObj.e.touches[0].screenY
+  },
+  tEnd: eObj => (s, a) => {
+    s.touchey.ex = eObj.e.changedTouches[0].screenX
+    s.touchey.ey = eObj.e.changedTouches[0].screenY
+    let t = s.touchey
+    if ((t.ex > t.sx) && (t.ex - t.sx > 175)) a.incUpdate(eObj.plate)
+    if ((t.ex < t.sx) && (t.sx - t.ex > 175)) a.decUpdate(eObj.plate) // left
   }
 }
 // PLATE
-const plateStyle = color => ({
-  color: color
-})
-const Plate = ({name, price, qty, hexCode, inc, dec}) => (
-  <tr>
-    <td>
-      <a href='javascript:void(0);' onclick={dec}>
-        <i class='material-icons md-dark pmd-sm' style={plateStyle(hexCode)}>remove_circle_outline</i>
-      </a>
-    </td>
-    <td style={plateStyle(hexCode)}>
-      <ul>
-        <li class='list-group-item'>
-          <h3 class='list-group-item-heading'>${price}</h3>
-          <span class='list-group-item-text'>${(price * qty).toFixed(2)}</span>
-        </li>
-      </ul>
-    </td>
-    <td>{qty}</td>
-    <td>
-      <a href='javascript:void(0);' onclick={inc}>
-        <i class='material-icons md-dark pmd-sm' style={plateStyle(hexCode)}>add_circle_outline</i>
-      </a>
-    </td>
-  </tr>
+const Plate = ({name, price, qty, hexCode, inc, dec, ts, te}) => (
+  <div
+    class='pmd-card pmd-card-default pmd-z-depth'
+    style={{backgroundColor: hexCode}}
+    ontouchstart={ts}
+    ontouchend={te}
+    >
+    <div class='pmd-card-title'>
+      <div class='media-left'>
+        <a class='qty'>{qty}</a>
+      </div>
+      <div class='media-body media-middle'>
+        <h3 class='pmd-card-title-text'>${(price * qty).toFixed(2)}</h3>
+        <span class='pmd-card-subtitle-text'>${price}</span>
+      </div>
+    </div>
+  </div>
 )
-
 const view = (s, a) => (
-  <div class='container'>
+  <div class='visible-xs'>
     <div class='pmd-card pmd-card-default pmd-z-depth'>
       <div class='pmd-card-title'>
         <h2 class='pmd-card-title-text'>sushiChooChoo.js</h2>
-        <span class='pmd-card-subtitle-text'>a simple conveyorbelt sushi calculator</span>
-      </div>
-      <div class='pmd-card-actions'>
-        <button
-          class='btn pmd-btn-flat pmd-ripple-effect btn-primary'
-          type='button'
-          onclick={() => a.reset()}>
-          Reset
-        </button>
+        <span class='pmd-card-subtitle-text'>total</span> <span class='lead'>${s.plateTotal.toFixed(2)}</span>
       </div>
     </div>
-    <div class='pmd-table-card pmd-card pmd-z-depth col-lg-4'>
-      <table class='table pmd-table'>
-        <thead>
-          <tr>
-            <td>remove</td>
-            <td>price/subtotal</td>
-            <td>quantity</td>
-            <td>add</td>
-          </tr>
-        </thead>
-        <tbody>
-          {s.plates.map(plate => (
-            <Plate name={plate.name} price={plate.price} qty={plate.qty} hexCode={plate.hexCode} inc={() => a.incUpdate(plate)} dec={() => a.decUpdate(plate)} />
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <div class='pmd-card pmd-z-depth col-lg-6 col-lg-offset-2'>
-      <div class='pmd-card-title'>
-        <h2 class='pmd-card-title-text'>${s.plateTotal.toFixed(2)}</h2>
-        <span class='pmd-card-subtitle-text'>Total</span>
-      </div>
+    {s.plates.map(plate => (
+      <Plate
+        name={plate.name}
+        price={plate.price}
+        qty={plate.qty}
+        hexCode={plate.hexCode}
+        inc={() => a.incUpdate(plate)}
+        dec={() => a.decUpdate(plate)}
+        ts={(e) => a.tStart({e, plate})}
+        te={(e) => a.tEnd({e, plate})}
+      />
+    ))}
+    <div class='pmd-card pmd-card-default pmd-z-depth'>
       <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
         <canvas id='barchart' />
+      </div>
+    </div>
+    <div class='pmd-card pmd-card-default pmd-z-depth'>
+      <div class='pmd-card-body' oncreate={() => a.updateCharts()}>
         <canvas id='piechart' />
       </div>
     </div>
   </div>
 )
+// onclick={() => a.reset()}
+/* <tr>
+  <td colspan='4'>
+    <div class='row'>
+      <div class="lead pull-left" style={{backgroundColor: plate.hexCode, margin: '3px', padding: '3px', width: '100%'}}>
+        {plate.name}<span style={{fontSize: '0.6em', color: '#e2e2e2'}} class='pull-right'> ${plate.price}</span>
+      </div>
+    </div>
+  </td>
+</tr> */
 app(state, actions, view, document.body)
