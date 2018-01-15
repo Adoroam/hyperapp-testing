@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>sushichoochoo.js</title>
+  </head>
+  <body>
+    <style>
+      html, body {
+        height: 100vh;
+        width: 100vw;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 1em;
+      }
+      body { display: grid; }
+      table {
+      }
+      td, th { border: 1px solid #e3e3e3; }
+      input { border: none; }
+      #a0 {border: 1px solid orange !important;}
+      #a1 {border: 1px solid purple !important;}
+      #a2 {border: 1px solid pink !important;}
+      #a3 {border: 1px solid green !important;}
+      #a4 {border: 1px solid blue !important;}
+      #a5 {border: 1px solid yellow !important;}
+      #a0, #a1, #a2, #a3, #a4, #a5, #reset {cursor: pointer;}
+      #reset {border: 1px solid red !important;}
+    </style>
+    <h1>Sushi Choo Choo Calculator</h1>
+    <div>
+      <table>
+        <tr>
+          <th></th>
+          <th id="a0" onclick="increment(0)"></th>
+          <th id="a1" onclick="increment(1)"></th>
+          <th id="a2" onclick="increment(2)"></th>
+        </tr>
+        <tr>
+          <th>price</th>
+          <td id="b0"></td>
+          <td id="b1"></td>
+          <td id="b2"></td>
+        </tr>
+        <tr>
+          <th>quantity</th>
+          <td id="c0"><input type="number" min="0" onchange="update()"></td>
+          <td id="c1"><input type="number" min="0" onchange="update()"></td>
+          <td id="c2"><input type="number" min="0" onchange="update()"></td>
+        </tr>
+        <tr>
+          <th>subtotal</th>
+          <td id="d0"></td>
+          <td id="d1"></td>
+          <td id="d2"></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th></th>
+          <th id="a3" onclick="increment(3)"></th>
+          <th id="a4" onclick="increment(4)"></th>
+          <th id="a5" onclick="increment(5)"></th>
+        </tr>
+        <tr>
+          <th>price</th>
+          <td id="b3"></td>
+          <td id="b4"></td>
+          <td id="b5"></td>
+        </tr>
+        <tr>
+          <th>quantity</th>
+          <td id="c3"><input type="number" min="0" onchange="update()"></td>
+          <td id="c4"><input type="number" min="0" onchange="update()"></td>
+          <td id="c5"><input type="number" min="0" onchange="update()"></td>
+        </tr>
+        <tr>
+          <th>subtotal</th>
+          <td id="d3"></td>
+          <td id="d4"></td>
+          <td id="d5"></td>
+        </tr>
+        <tr>
+          <td style="border: none;"></td>
+          <th onclick="reset()" id="reset">reset</th>
+          <th>total</th>
+          <td id="total"></td>
+        </tr>
+      </table>
+    </div>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <script>
+      const base = [
+        { name: 'Orange', price: 4.25, qty: 0 },
+        { name: 'Purple', price: 3.75, qty: 0 },
+        { name: 'Pink', price: 3.25, qty: 0 },
+        { name: 'Green', price: 2.75, qty: 0 },
+        { name: 'Blue', price: 2.25, qty: 0 },
+        { name: 'Yellow', price: 1.75, qty: 0 }
+      ]
+      const plates = base.map(item => item)
+      plates.forEach((item, ind) => {
+        $(`#a${ind}`).text(item.name.toLowerCase())
+        $(`#b${ind}`).text(`$${item.price}`)
+        $(`#c${ind} > input`).val(item.qty)
+        $(`#d${ind}`).text('$0.00')
+        $('#total').text('$0.00')
+      })
+      let update = () => {
+        plates.forEach((item, ind) => {
+          plates[ind].qty = Number($(`#c${ind} > input`).val())
+          let subtotal = (item.price * item.qty).toFixed(2)
+          $(`#d${ind}`).text(`$${subtotal}`)
+        })
+        $('#total').text('$' + plates.map(pl => pl.price * pl.qty).reduce((sum, value) => sum + value, 0).toFixed(2))
+      }
+      let increment = (ind) => {
+        let current = Number($(`#c${ind} > input`).val())
+        let inc = current + 1
+        $(`#c${ind} > input`).val(inc)
+        update()
+      }
+      let reset = () => {
+        plates.forEach((item, ind) => { $(`#c${ind} > input`).val(0) })
+        update()
+       }
+    </script>
+  </body>
+</html>

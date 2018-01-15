@@ -1,0 +1,12 @@
+.pmd-card {
+  margin-bottom: 0;
+}
+.qty {
+  color: black;
+  opacity: 0.5;
+  font-size: 2em;
+}
+.inc-button {
+  background-color: white;
+  opacity: 0.5;
+}
